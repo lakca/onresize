@@ -1,0 +1,24 @@
+{
+  "name": "@lakca/onresize",
+  "version": "0.1.0",
+  "description": "add resize listener on element.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lakca/onresize.git"
+  },
+  "keywords": [
+    "onresize",
+    "element",
+    "dom"
+  ],
+  "author": "lakca",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lakca/onresize/issues"
+  },
+  "homepage": "https://github.com/lakca/onresize#readme"
+}
