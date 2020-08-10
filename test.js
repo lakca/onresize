@@ -32,16 +32,18 @@ mockElement.message = 'basic test, callback should called in the exact frame.'
 function mockElement2(f) {
   frame = 0
   let w = 0, h = 0, t = ~~(Math.random() * (f - 1))
-  // size only changed before penultimate frame.
-  if (frame % f === t) {
-    w = width(w - 1)
-    h = height(h - 1)
-  } else {
-    width()
-    height()
-  }
   return {
-    get offsetWidth() { return w },
+    get offsetWidth() {
+      // size only changed before penultimate frame.
+      if (frame % f === t) {
+        w = width()
+        h = height()
+      } else {
+        width()
+        height()
+      }
+      return w
+    },
     get offsetHeight() { return h }
   }
 }
@@ -54,9 +56,9 @@ global.window = {
   requestAnimationFrame(cb) {
     const id = length()
     setTimeout(() => {
-      frame++
       if (detached[id]) return
       delete detached[id]
+      frame++
       // @ts-ignore
       cb()
     }, 10)
@@ -79,10 +81,10 @@ function flow(...calls) {
 
 flow(
   // @ts-ignore
-  () => onresize(mockElement(), { frame: 10 }, (size) => {
+  () => onresize(mockElement(), (size) => {
     assert.equal(w, size.width, 'expect callback size param to be the last size.')
     assert.equal(h, size.height, 'expect callback size param to be the last size.')
-    assert.equal(frame % 10, 0, 'called in unexpected frame: ' + frame)
+    assert.equal(frame % 30, 0, 'called in unexpected frame: ' + frame)
   }),
   mockElement.message,
   // @ts-ignore
@@ -91,5 +93,14 @@ flow(
     assert.notEqual(h, size.height, 'unexpected size')
     assert.equal(frame % 20, 0, 'called in unexpected frame: ' + frame)
   }),
-  mockElement2.message
+  mockElement2.message,
+  // @ts-ignore
+  () => onresize(mockElement(), {
+    getSize: (ele) => ele.offsetWidth + ele.offsetHeight,
+    equal: (a, b) => a === b
+  }, (size) => {
+    assert.equal(w + h, size, 'expect callback size param to be the last size.')
+    assert.equal(frame % 30, 0, 'called in unexpected frame: ' + frame)
+  }),
+  'custom `getSize` and `equal`.'
 )

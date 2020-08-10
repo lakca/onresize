@@ -4,7 +4,7 @@
   "description": "add resize listener on element.",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test.js"
+    "test": "istanbul cover test.js -x test.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,13 @@
   "bugs": {
     "url": "https://github.com/lakca/onresize/issues"
   },
-  "homepage": "https://github.com/lakca/onresize#readme"
+  "homepage": "https://github.com/lakca/onresize#readme",
+  "devDependencies": {
+    "istanbul": "^0.4.5"
+  },
+  "files": [
+    "index.js",
+    "LICENSE",
+    "README.md"
+  ]
 }
