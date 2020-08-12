@@ -2,6 +2,9 @@
 
 > Listen on the change of HTML Element.
 
+[![Build Status](https://travis-ci.org/lakca/onresize.svg?branch=master)](https://travis-ci.org/lakca/onresize)
+[![codecov](https://codecov.io/gh/lakca/onresize/branch/master/graph/badge.svg)](https://codecov.io/gh/lakca/onresize)
+
 ## Usage
 
 > By default, listen on the size change of element.
