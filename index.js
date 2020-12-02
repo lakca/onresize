@@ -16,9 +16,10 @@ module.exports = function onresize(ele, opts, cb) {
     opts = {}
   }
   opts = Object.assign({ frame: 30, getSize, equal }, opts)
-  let prevSize = opts.getSize(ele)
+  let currentSize = opts.getSize(ele)
   let handler = frame()
   let count = 0
+  exec(currentSize)
   return function cancel() {
     window.cancelAnimationFrame(handler)
   }
@@ -30,14 +31,17 @@ module.exports = function onresize(ele, opts, cb) {
       } else {
         count %= opts.frame
       }
-      const size = opts.getSize(ele)
-      try {
-        if (!opts.equal(prevSize, size))
-          cb(size)
-      } finally {
-        prevSize = size
-      }
+      exec(opts.getSize(ele), currentSize)
     })
+  }
+  function exec(size, lastSize) {
+    try {
+      if (!opts.equal(lastSize, size)) {
+        cb(size)
+      }
+    } finally {
+      lastSize = size
+    }
   }
 }
 
@@ -49,5 +53,9 @@ function getSize(ele) {
 }
 
 function equal(one, other) {
-  return one.width === other.width && one.height === other.height
+  if (one && other) {
+    return one.width === other.width && one.height === other.height
+  } else {
+    return false
+  }
 }
